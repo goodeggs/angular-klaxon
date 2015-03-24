@@ -1,0 +1,11 @@
+.alerts(ng-if='alerts.length > 0')
+  div(ng-repeat='alert in alerts')
+    alert(ng-if='alert.closable', type='{{alert.type}}', close='alert.close($event)')
+      | {{alert.msg}}&nbsp;
+      a.alert-link(ng-if='alert.callToAction', ng-click='alert.click($event)', href='#') {{alert.callToAction}}
+      .debug-info(ng-if='alert.debugInfo') {{ alert.debugInfo }}
+
+    alert(ng-if='!alert.closable', type='{{alert.type}}')
+      | {{alert.msg}}&nbsp;
+      a.alert-link(ng-if='alert.callToAction', ng-click='alert.click($event)', href='#') {{alert.callToAction}}
+      .debug-info(ng-if='alert.debugInfo') {{alert.debugInfo}}

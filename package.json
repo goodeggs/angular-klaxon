@@ -13,11 +13,22 @@
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/goodeggs/ng-klaxon.git"
+    "url": "git://github.com/goodeggs/angular-klaxon.git"
   },
-  "homepage": "https://github.com/goodeggs/ng-klaxon",
-  "bugs": "https://github.com/goodeggs/ng-klaxon/issues",
-  "dependencies": {},
+  "homepage": "https://github.com/goodeggs/angular-klaxon",
+  "bugs": "https://github.com/goodeggs/angular-klaxon/issues",
+  "dependencies": {
+    "chai": "^2.1.2",
+    "chai-jquery": "^2.0.0",
+    "karma-browserify": "^4.0.0",
+    "karma-chai": "^0.1.0",
+    "karma-chai-jquery": "^1.0.0",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-jquery": "^0.1.0",
+    "karma-mocha": "^0.1.10",
+    "karma-sinon-chai": "^0.3.0",
+    "karma-spec-reporter": "0.0.16"
+  },
   "devDependencies": {
     "coffee-script": ">=1.8.x",
     "uglify-js": "^2.4.12",
@@ -32,10 +43,10 @@
   "scripts": {
     "compile": "coffee --bare --compile --output lib/ src/",
     "prepublish": "bower -sj install",
-    "pretest": "npm run compile",
+    "build": "npm run compile && npm run link && npm run minify",
+    "pretest": "npm run build",
     "test": "karma start",
-    "link": "browserify lib/index.js > {{ pkgname }}.js",
-    "minify": "uglifyjs {{ pkgname }}.js > {{ pkgname }}.min.js",
-    "build": "npm run compile && npm run link && npm run minify"
+    "link": "browserify lib/index.js > angular-klaxon.js",
+    "minify": "uglifyjs angular-klaxon.js > angular-klaxon.min.js"
   }
 }

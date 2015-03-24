@@ -9,8 +9,24 @@ module.exports = function(config) {
 
 
     // frameworks to use
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: [
+      'mocha',
+      'chai-jquery',
+      'sinon-chai',
+      'chai',
+      'jquery-2.1.0'
+    ],
 
+    plugins: [
+      require('karma-spec-reporter'),
+      require('karma-mocha'),
+      require('karma-sinon-chai'),
+      require('karma-jquery'),
+      require('karma-chai-jquery'),
+      require('karma-chai'),
+      require('karma-coffee-preprocessor'),
+      require('karma-phantomjs-launcher')
+    ],
 
     // list of files / patterns to load in the browser
     files: [
