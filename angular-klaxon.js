@@ -44,10 +44,9 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
        */
 
       KlaxonAlert.prototype.add = function() {
-        if (this.index != null) {
+        if (this.getIndex() != null) {
           return;
         }
-        this.index = KlaxonAlert.all.length;
         if (this.key && KlaxonAlert.all.some((function(_this) {
           return function(alert) {
             return alert.key === _this.key;
@@ -76,12 +75,28 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
       };
 
       KlaxonAlert.prototype.close = function($event) {
+        var index;
         if ($event != null) {
           if (typeof $event.preventDefault === "function") {
             $event.preventDefault();
           }
         }
-        return KlaxonAlert.all.splice(this.index, 1);
+        index = this.getIndex();
+        if (index == null) {
+          return;
+        }
+        return KlaxonAlert.all.splice(index, 1);
+      };
+
+      KlaxonAlert.prototype.getIndex = function() {
+        var alert, i, index, len, ref;
+        ref = KlaxonAlert.all;
+        for (index = i = 0, len = ref.length; i < len; index = ++i) {
+          alert = ref[index];
+          if (alert === this) {
+            return index;
+          }
+        }
       };
 
       return KlaxonAlert;

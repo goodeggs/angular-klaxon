@@ -27,9 +27,9 @@ module.exports = angular.module 'klaxon', []
     Add alert to list of displayed alerts
     ###
     add: ->
-      return if @index?
-      @index = KlaxonAlert.all.length
+      return if @getIndex()? # alert has already been added, don't add it twice
 
+      # find/remove alerts with the same key
       if @key and KlaxonAlert.all.some((alert) => alert.key is @key)
         KlaxonAlert.all = KlaxonAlert.all.map (alert) =>
           if alert.key isnt @key or alert.priority > @priority
@@ -46,9 +46,15 @@ module.exports = angular.module 'klaxon', []
         $rootScope.$digest() unless $rootScope.$$phase
       , 1
 
-    close:($event) ->
+    close: ($event) ->
       $event?.preventDefault?()
-      KlaxonAlert.all.splice @index, 1
+      index = @getIndex()
+      return unless index?
+      KlaxonAlert.all.splice index, 1
+
+    getIndex: ->
+      for alert, index in KlaxonAlert.all
+        return index if alert is @
 ]
 
 .directive 'klaxonAlert', ->

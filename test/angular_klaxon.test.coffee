@@ -19,6 +19,27 @@ describe 'angular-klaxon', ->
       expect(alert.msg).to.equal 'The floor is lava!'
       expect(alert.type).to.equal 'danger'
 
+    it 'should add warnings to KlaxonAlert.all', inject (KlaxonAlert) ->
+      one = new KlaxonAlert('one')
+      two = new KlaxonAlert('two')
+      three = new KlaxonAlert('three')
+      one.add()
+      two.add()
+      three.add()
+      expect(KlaxonAlert.all).to.deep.equal [one, two, three]
+
+    it 'should remove warnings from KlaxonAlert.all when close() is called', inject (KlaxonAlert) ->
+      one = new KlaxonAlert('one')
+      two = new KlaxonAlert('two')
+      three = new KlaxonAlert('three')
+      one.add()
+      two.add()
+      three.add()
+      one.close()
+      two.close()
+      three.close()
+      expect(KlaxonAlert.all).to.deep.equal []
+
   describe '<klaxon-alert> directive', ->
     it 'should have a close button by default', inject (KlaxonAlert) ->
       @$scope.alert = new KlaxonAlert('The floor is lava!')
