@@ -1,7 +1,7 @@
 {
   "name": "angular-klaxon",
   "main": "angular-klaxon.js",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "homepage": "https://github.com/goodeggs/ng-klaxon",
   "description": "Bootstrap-compatible, configurable alerts for your angular app.",
   "keywords": [
