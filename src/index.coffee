@@ -58,11 +58,11 @@ module.exports = angular.module 'klaxon', []
   template: """
     <div
       class='alert'
-      ng-class="['alert-' + (alert.type || 'warning'), alert.closeable ? 'alert-dismissable' : null]"
+      ng-class="['alert-' + (alert.type || 'warning'), alert.closable ? 'alert-dismissable' : null]"
       role="alert"
     >
       <button
-        ng-show="closeable"
+        ng-show="alert.closable"
         type="button"
         class="close"
         ng-click="alert.close($event)"
