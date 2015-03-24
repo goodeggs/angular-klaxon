@@ -1,0 +1,24 @@
+{
+  "name": "angular-klaxon",
+  "main": "angular-klaxon.js",
+  "version": "0.0.0",
+  "homepage": "https://github.com/goodeggs/ng-klaxon",
+  "description": "Bootstrap-compatible, configurable alerts for your angular app.",
+  "keywords": [
+    "angularjs"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.14"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.2.14"
+  }
+}
