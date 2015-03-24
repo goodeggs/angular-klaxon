@@ -1,7 +1,7 @@
 module.exports = angular.module 'klaxon', []
 
-.factory 'Alert', ['$rootScope', '$timeout', ($rootScope, $timeout) ->
-  class Alert
+.factory 'KlaxonAlert', ['$rootScope', '$timeout', ($rootScope, $timeout) ->
+  class KlaxonAlert
     @all: []
 
     ###
@@ -28,16 +28,16 @@ module.exports = angular.module 'klaxon', []
     ###
     add: ->
       return if @index?
-      @index = Alert.all.length
+      @index = KlaxonAlert.all.length
 
-      if @key and Alert.all.some((alert) => alert.key is @key)
-        Alert.all = Alert.all.map (alert) =>
+      if @key and KlaxonAlert.all.some((alert) => alert.key is @key)
+        KlaxonAlert.all = KlaxonAlert.all.map (alert) =>
           if alert.key isnt @key or alert.priority > @priority
             alert
           else
             @
       else
-        Alert.all.push @
+        KlaxonAlert.all.push @
 
       $timeout @close.bind(@), @timeout if @timeout?
 
@@ -48,7 +48,7 @@ module.exports = angular.module 'klaxon', []
 
     close:($event) ->
       $event?.preventDefault?()
-      Alert.all.splice @index, 1
+      KlaxonAlert.all.splice @index, 1
 ]
 
 .directive 'klaxonAlert', ->
@@ -91,7 +91,7 @@ module.exports = angular.module 'klaxon', []
     </div>
   """
 
-.directive 'alertContainer', ['Alert', (Alert) ->
+.directive 'klaxonAlertContainer', ['KlaxonAlert', (KlaxonAlert) ->
   restrict: 'E'
   template: """
     <div class='alerts' ng-if='alerts.length > 0'>
@@ -99,5 +99,5 @@ module.exports = angular.module 'klaxon', []
     </div>
   """
   link: (scope, element, attrs) ->
-    scope.alerts = Alert.all
+    scope.alerts = KlaxonAlert.all
 ]
