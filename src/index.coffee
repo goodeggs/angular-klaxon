@@ -30,21 +30,24 @@ module.exports = angular.module 'klaxon', []
       return if @getIndex()? # alert has already been added, don't add it twice
 
       # find/remove alerts with the same key
+      appendAlert = true
+
       if @key and KlaxonAlert.all.some((alert) => alert.key is @key)
-        KlaxonAlert.all = KlaxonAlert.all.map (alert) =>
-          if alert.key isnt @key or alert.priority > @priority
-            alert
+        KlaxonAlert.all.forEach (alert) =>
+          return unless alert.key is @key
+          if alert.priority > @priority
+            appendAlert = false
           else
-            @
-      else
-        KlaxonAlert.all.push @
+            alert.close()
+
+      return unless appendAlert
+
+      KlaxonAlert.all.push @
 
       $timeout @close.bind(@), @timeout if @timeout?
 
-      # required for the layout to re-render and make alerts appear.
-      $timeout ->
-        $rootScope.$digest() unless $rootScope.$$phase
-      , 1
+      # tell anything that renders alerts to $digest and update itself
+      $rootScope.$broadcast 'klaxon.alertAdded', @
 
     close: ($event) ->
       $event?.preventDefault?()
@@ -106,4 +109,8 @@ module.exports = angular.module 'klaxon', []
   """
   link: (scope, element, attrs) ->
     scope.alerts = KlaxonAlert.all
+
+    scope.$on 'klaxon.alertAdded', ->
+      scope.alerts = KlaxonAlert.all
+      scope.$digest() unless scope.$$phase
 ]

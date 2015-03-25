@@ -44,34 +44,37 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
        */
 
       KlaxonAlert.prototype.add = function() {
+        var appendAlert;
         if (this.getIndex() != null) {
           return;
         }
+        appendAlert = true;
         if (this.key && KlaxonAlert.all.some((function(_this) {
           return function(alert) {
             return alert.key === _this.key;
           };
         })(this))) {
-          KlaxonAlert.all = KlaxonAlert.all.map((function(_this) {
+          KlaxonAlert.all.forEach((function(_this) {
             return function(alert) {
-              if (alert.key !== _this.key || alert.priority > _this.priority) {
-                return alert;
+              if (alert.key !== _this.key) {
+                return;
+              }
+              if (alert.priority > _this.priority) {
+                return appendAlert = false;
               } else {
-                return _this;
+                return alert.close();
               }
             };
           })(this));
-        } else {
-          KlaxonAlert.all.push(this);
         }
+        if (!appendAlert) {
+          return;
+        }
+        KlaxonAlert.all.push(this);
         if (this.timeout != null) {
           $timeout(this.close.bind(this), this.timeout);
         }
-        return $timeout(function() {
-          if (!$rootScope.$$phase) {
-            return $rootScope.$digest();
-          }
-        }, 1);
+        return $rootScope.$broadcast('klaxon.alertAdded', this);
       };
 
       KlaxonAlert.prototype.close = function($event) {
@@ -117,7 +120,13 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
       restrict: 'E',
       template: "<div class='alerts' ng-if='alerts.length > 0'>\n  <klaxon-alert data='alert' ng-repeat='alert in alerts'></alert>\n</div>",
       link: function(scope, element, attrs) {
-        return scope.alerts = KlaxonAlert.all;
+        scope.alerts = KlaxonAlert.all;
+        return scope.$on('klaxon.alertAdded', function() {
+          scope.alerts = KlaxonAlert.all;
+          if (!scope.$$phase) {
+            return scope.$digest();
+          }
+        });
       }
     };
   }

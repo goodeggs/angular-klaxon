@@ -58,3 +58,15 @@ describe 'angular-klaxon', ->
       el = @compileAndRender '<klaxon-alert-container></klaxon-alert-container>'
       expect(el).to.contain 'The floor is lava!'
       expect(el).to.contain 'Safe!'
+
+    it 'should update the alert container in a timeout when a new alert is added', inject (KlaxonAlert, $timeout) ->
+      el = @compileAndRender '<klaxon-alert-container></klaxon-alert-container>'
+      new KlaxonAlert('The floor is lava!', key: 'lava').add()
+      expect(el).to.contain 'The floor is lava!'
+
+    it 'should update the alert container when alerts sharing a key are added', inject (KlaxonAlert, $timeout) ->
+      new KlaxonAlert('The floor is lava!', key: 'lava').add()
+      el = @compileAndRender '<klaxon-alert-container></klaxon-alert-container>'
+      new KlaxonAlert('The floor is really, really hot; be careful!', key: 'lava').add()
+      expect(el).not.to.contain 'The floor is lava!'
+      expect(el).to.contain 'The floor is really, really hot; be careful!'
