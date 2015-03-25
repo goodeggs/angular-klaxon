@@ -2,6 +2,8 @@
 
 [Bootstrap](http://getbootstrap.com/)-compatible, configurable [alerts](http://getbootstrap.com/components/#alerts) for your [angular app](https://angularjs.org/).
 
+![The official Klaxon logo, a cartoon Klaxon alarm](https://raw.github.com/goodeggs/angular-klaxon/master/doc/klaxon.png)
+
 [![Build Status](http://img.shields.io/travis/goodeggs/ng-klaxon.svg?style=flat-square)](https://travis-ci.org/goodeggs/ng-klaxon)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](https://github.com/goodeggs/angular-klaxon/blob/master/LICENSE.md)
 
