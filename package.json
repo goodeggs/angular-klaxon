@@ -37,7 +37,7 @@
   },
   "scripts": {
     "compile": "coffee --bare --compile --output lib/ src/",
-    "prepublish": "bower -sj install",
+    "prepublish": "bower -sj install && npm run build",
     "build": "npm run compile && npm run link && npm run minify",
     "pretest": "npm run build",
     "test": "karma start",
