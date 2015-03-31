@@ -1,6 +1,6 @@
 {
   "name": "angular-klaxon",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Bootstrap-compatible, configurable alerts for your angular app.",
   "author": "Good Eggs <open-source@goodeggs.com>",
   "contributors": [
