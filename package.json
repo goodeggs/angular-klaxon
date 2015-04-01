@@ -43,5 +43,9 @@
     "test": "karma start",
     "link": "browserify lib/index.js > angular-klaxon.js",
     "minify": "uglifyjs angular-klaxon.js > angular-klaxon.min.js"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "always-auth": true
   }
 }
