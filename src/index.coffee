@@ -1,6 +1,6 @@
 module.exports = angular.module 'klaxon', []
 
-.factory 'KlaxonAlert', ['$rootScope', '$timeout', ($rootScope, $timeout) ->
+.factory 'KlaxonAlert', ['$rootScope', '$interval', ($rootScope, $interval) ->
   class KlaxonAlert
     @all: []
 
@@ -44,7 +44,7 @@ module.exports = angular.module 'klaxon', []
 
       KlaxonAlert.all.push @
 
-      $timeout @close.bind(@), @timeout if @timeout?
+      $interval @close.bind(@), @timeout, 1 if @timeout?
 
       # tell anything that renders alerts to $digest and update itself
       $rootScope.$broadcast 'klaxon.alertAdded', @
