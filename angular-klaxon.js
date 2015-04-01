@@ -115,7 +115,7 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
     template: "<div\n  class='alert'\n  ng-class=\"['alert-' + (alert.type || 'warning'), alert.closable ? 'alert-dismissable' : null]\"\n  role=\"alert\"\n>\n  <button\n    ng-show=\"alert.closable\"\n    type=\"button\"\n    class=\"close\"\n    ng-click=\"alert.close($event)\"\n  >\n    <span aria-hidden=\"true\">&times;</span>\n    <span class=\"sr-only\">Close</span>\n  </button>\n\n  {{ alert.msg }}&nbsp;\n\n  <a\n    class='alert-link'\n    ng-if='alert.callToAction'\n    ng-click='alert.click($event)'\n    href='#'\n  >\n    {{alert.callToAction}}\n  </a>\n\n  <div\n    class='debug-info'\n    ng-if='alert.debugInfo'\n  >\n    {{ alert.debugInfo }}\n  </div>\n</div>"
   };
 }).directive('klaxonAlertContainer', [
-  'KlaxonAlert', function(KlaxonAlert) {
+  'KlaxonAlert', '$timeout', function(KlaxonAlert, $timeout) {
     return {
       restrict: 'E',
       template: "<div class='alerts' ng-if='alerts.length > 0'>\n  <klaxon-alert data='alert' ng-repeat='alert in alerts'></alert>\n</div>",
@@ -123,9 +123,11 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
         scope.alerts = KlaxonAlert.all;
         return scope.$on('klaxon.alertAdded', function() {
           scope.alerts = KlaxonAlert.all;
-          if (!scope.$$phase) {
-            return scope.$digest();
-          }
+          return $timeout((function() {
+            if (!scope.$$phase) {
+              return scope.$digest();
+            }
+          }), 1);
         });
       }
     };

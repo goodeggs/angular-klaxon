@@ -100,7 +100,7 @@ module.exports = angular.module 'klaxon', []
     </div>
   """
 
-.directive 'klaxonAlertContainer', ['KlaxonAlert', (KlaxonAlert) ->
+.directive 'klaxonAlertContainer', ['KlaxonAlert', '$timeout', (KlaxonAlert, $timeout) ->
   restrict: 'E'
   template: """
     <div class='alerts' ng-if='alerts.length > 0'>
@@ -112,5 +112,5 @@ module.exports = angular.module 'klaxon', []
 
     scope.$on 'klaxon.alertAdded', ->
       scope.alerts = KlaxonAlert.all
-      scope.$digest() unless scope.$$phase
+      $timeout (-> scope.$digest() unless scope.$$phase), 1
 ]
