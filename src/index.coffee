@@ -11,17 +11,22 @@ module.exports = angular.module 'klaxon', []
     @param {Number} [priority] - higher priority takes precedent when two alerts have the same key
     @param {Boolean} [closable] - alert closable by x icon
     @param {String} [callToAction] - clickable message displayed in alert
-    @param {Function} [onClick] - callback when call to action is clicked
+    @param {Function} [onClick] - callback when alert is clicked
+    @param {Function} [onCallToActionClick] - callback when call to action is clicked
     @param {Number} [timeout] - timeout for removing the this alert
     @param {String} [debugInfo] - extra info to display inside alert for engineer
     ###
-    constructor: (@msg, {@type, @key, @priority, @closable, @callToAction, @onClick, @debugInfo, @timeout} = {}) ->
+    constructor: (@msg, {@type, @key, @priority, @closable, @callToAction, @onClick, @onCallToActionClick, @debugInfo, @timeout} = {}) ->
       @type ?= 'info'
       @closable ?= yes
 
     click: ($event) ->
       $event?.preventDefault()
       @onClick?($event)
+
+    clickCallToAction: ($event) ->
+      $event?.preventDefault()
+      @onCallToActionClick?($event)
 
     ###
     Add alert to list of displayed alerts
@@ -68,6 +73,7 @@ module.exports = angular.module 'klaxon', []
     <div
       class='alert'
       ng-class="['alert-' + (alert.type || 'warning'), alert.closable ? 'alert-dismissable' : null]"
+      ng-click="alert.click($event)"
       role="alert"
     >
       <button
@@ -85,7 +91,7 @@ module.exports = angular.module 'klaxon', []
       <a
         class='alert-link'
         ng-if='alert.callToAction'
-        ng-click='alert.click($event)'
+        ng-click='alert.clickCallToAction($event)'
         href='#'
       >
         {{alert.callToAction}}

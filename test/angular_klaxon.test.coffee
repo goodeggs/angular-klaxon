@@ -51,6 +51,20 @@ describe 'angular-klaxon', ->
       el = @compileAndRender('<klaxon-alert data="alert"></klaxon-alert>')
       expect(el.find 'button.close').not.to.be.visible
 
+    it 'should use onClick handler on click', inject (KlaxonAlert) ->
+      spyFn = sinon.spy()
+      @$scope.alert = new KlaxonAlert('The floor is lava!', onClick: spyFn)
+      el = @compileAndRender('<klaxon-alert data="alert"></klaxon-alert>')
+      el.find('.alert').click()
+      expect(spyFn.calledOnce).to.equal true
+
+    it 'should use onCallToActionClick handler on call to action click', inject (KlaxonAlert) ->
+      spyFn = sinon.spy()
+      @$scope.alert = new KlaxonAlert('The floor is lava!', callToAction: 'lava!', onCallToActionClick: spyFn)
+      el = @compileAndRender('<klaxon-alert data="alert"></klaxon-alert>')
+      el.find('.alert-link').click()
+      expect(spyFn.calledOnce).to.equal true
+
   describe '<klaxon-alert-container> directive', ->
     it 'should render the alert container with all the alerts added', inject (KlaxonAlert) ->
       new KlaxonAlert('The floor is lava!').add()

@@ -14,7 +14,8 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
       @param {Number} [priority] - higher priority takes precedent when two alerts have the same key
       @param {Boolean} [closable] - alert closable by x icon
       @param {String} [callToAction] - clickable message displayed in alert
-      @param {Function} [onClick] - callback when call to action is clicked
+      @param {Function} [onClick] - callback when alert is clicked
+      @param {Function} [onCallToActionClick] - callback when call to action is clicked
       @param {Number} [timeout] - timeout for removing the this alert
       @param {String} [debugInfo] - extra info to display inside alert for engineer
        */
@@ -22,7 +23,7 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
       function KlaxonAlert(msg, arg) {
         var ref;
         this.msg = msg;
-        ref = arg != null ? arg : {}, this.type = ref.type, this.key = ref.key, this.priority = ref.priority, this.closable = ref.closable, this.callToAction = ref.callToAction, this.onClick = ref.onClick, this.debugInfo = ref.debugInfo, this.timeout = ref.timeout;
+        ref = arg != null ? arg : {}, this.type = ref.type, this.key = ref.key, this.priority = ref.priority, this.closable = ref.closable, this.callToAction = ref.callToAction, this.onClick = ref.onClick, this.onCallToActionClick = ref.onCallToActionClick, this.debugInfo = ref.debugInfo, this.timeout = ref.timeout;
         if (this.type == null) {
           this.type = 'info';
         }
@@ -36,6 +37,13 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
           $event.preventDefault();
         }
         return typeof this.onClick === "function" ? this.onClick($event) : void 0;
+      };
+
+      KlaxonAlert.prototype.clickCallToAction = function($event) {
+        if ($event != null) {
+          $event.preventDefault();
+        }
+        return typeof this.onCallToActionClick === "function" ? this.onCallToActionClick($event) : void 0;
       };
 
 
@@ -112,7 +120,7 @@ module.exports = angular.module('klaxon', []).factory('KlaxonAlert', [
     scope: {
       alert: '=data'
     },
-    template: "<div\n  class='alert'\n  ng-class=\"['alert-' + (alert.type || 'warning'), alert.closable ? 'alert-dismissable' : null]\"\n  role=\"alert\"\n>\n  <button\n    ng-show=\"alert.closable\"\n    type=\"button\"\n    class=\"close\"\n    ng-click=\"alert.close($event)\"\n  >\n    <span aria-hidden=\"true\">&times;</span>\n    <span class=\"sr-only\">Close</span>\n  </button>\n\n  {{ alert.msg }}&nbsp;\n\n  <a\n    class='alert-link'\n    ng-if='alert.callToAction'\n    ng-click='alert.click($event)'\n    href='#'\n  >\n    {{alert.callToAction}}\n  </a>\n\n  <div\n    class='debug-info'\n    ng-if='alert.debugInfo'\n  >\n    {{ alert.debugInfo }}\n  </div>\n</div>"
+    template: "<div\n  class='alert'\n  ng-class=\"['alert-' + (alert.type || 'warning'), alert.closable ? 'alert-dismissable' : null]\"\n  ng-click=\"alert.click($event)\"\n  role=\"alert\"\n>\n  <button\n    ng-show=\"alert.closable\"\n    type=\"button\"\n    class=\"close\"\n    ng-click=\"alert.close($event)\"\n  >\n    <span aria-hidden=\"true\">&times;</span>\n    <span class=\"sr-only\">Close</span>\n  </button>\n\n  {{ alert.msg }}&nbsp;\n\n  <a\n    class='alert-link'\n    ng-if='alert.callToAction'\n    ng-click='alert.clickCallToAction($event)'\n    href='#'\n  >\n    {{alert.callToAction}}\n  </a>\n\n  <div\n    class='debug-info'\n    ng-if='alert.debugInfo'\n  >\n    {{ alert.debugInfo }}\n  </div>\n</div>"
   };
 }).directive('klaxonAlertContainer', [
   'KlaxonAlert', '$timeout', function(KlaxonAlert, $timeout) {

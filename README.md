@@ -69,6 +69,8 @@ alert = new KlaxonAlert(msg, options)
     `timeout` milliseconds have passed.
   - `callToAction` (`String`): If this is set, this string will be displayed
     after the message as a clickable link.
+  - `onCallToActionClick` (`Function`): If this is set in addition to callToAction, clicking on the call to action message will call this function.
+    function.
   - `onClick` (`Function`): If this is set, clicking on the alert will call this
     function.
   - `debugInfo` (`String`): If this is set, it will be displayed below the
